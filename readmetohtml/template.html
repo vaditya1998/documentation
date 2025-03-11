@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>{{ title }}</title>
+  <style>
+    /* Reset body margin, set background and font */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    /* Fixed header at the top */
+    .header {
+      background-color: #337ab7;
+      color: white;
+      padding: 15px;
+      font-size: 24px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999; /* on top */
+    }
+
+    /*
+      Fixed sidebar below the header:
+      - top: 70px to leave space for ~70px header
+      - left: 0 to be flush on the left edge
+      - width: 300px
+      - bottom: 0 to stretch to bottom
+      - overflow-y: auto for scrolling if needed
+    */
+    .sidebar {
+      position: fixed;
+      top: 70px;         /* below the fixed header */
+      left: 0;
+      width: 300px;
+      bottom: 0;
+      padding: 20px;
+      background-color: #fafafa;
+      border-right: 1px solid #ddd;
+      overflow-y: auto;
+      z-index: 998;      /* behind the header, but above content */
+    }
+
+    /*
+      Main content:
+      - margin-top: 70px to start below header
+      - margin-left: 300px to leave space for sidebar
+      - padding: 20px for aesthetics
+      - no explicit height so it can grow
+      - content will scroll normally with the browser’s main scrollbar
+    */
+    .content {
+      margin-top: 70px;
+      margin-left: 400px;
+      padding: 20px;
+    }
+
+    /* Sidebar list styling */
+    .sidebar-root {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .sidebar-page, .sidebar-h1 {
+      margin-bottom: 6px;
+    }
+    .sidebar-toggle {
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 5px;
+      color: #555;
+    }
+    .h1-list, .h2-list {
+      list-style: none;
+      margin: 0 0 0 15px;
+      padding: 0;
+    }
+
+    /* Links */
+    a {
+      text-decoration: none;
+      color: #337ab7;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Collapsible H2 sections in the page content */
+    .h2-toggle {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    .collapsible-section {
+      display: none; /* hidden by default */
+      margin-left: 20px;
+    }
+
+    /* Code blocks and tables */
+    pre code {
+      background-color: #f0f0f0;
+      padding: 5px;
+      display: block;
+      overflow-x: auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed header -->
+  <div class="header">
+    {{ title }}
+  </div>
+
+  <!-- Fixed sidebar -->
+  <div class="sidebar">
+    {{ sidebar | safe }}
+  </div>
+
+  <!-- Main content area -->
+  <div class="content">
+    {{ content | safe }}
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Expand/collapse for the sidebar
+      var toggles = document.querySelectorAll(".sidebar-toggle");
+      toggles.forEach(function(toggle) {
+        toggle.addEventListener("click", function() {
+          var ul = this.parentElement.querySelector("ul");
+          if (!ul) return;
+          if (ul.style.display === "none" || ul.style.display === "") {
+            ul.style.display = "block";
+            this.textContent = "- ";
+          } else {
+            ul.style.display = "none";
+            this.textContent = "+ ";
+          }
+        });
+      });
+
+      // In-page H2 collapsible sections
+      var h2Toggles = document.querySelectorAll(".h2-toggle");
+      h2Toggles.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var collapsible = this.parentNode.nextElementSibling;
+          if (collapsible && collapsible.classList.contains("collapsible-section")) {
+            if (collapsible.style.display === "none" || collapsible.style.display === "") {
+              collapsible.style.display = "block";
+              this.textContent = "-";
+            } else {
+              collapsible.style.display = "none";
+              this.textContent = "+";
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
