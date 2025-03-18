@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>{{ title }}</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+    .header {
+      background-color: #337ab7;
+      color: white;
+      padding: 15px;
+      font-size: 24px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+    .sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 250px;
+      bottom: 0;
+      padding: 20px;
+      background-color: #fafafa;
+      border-right: 1px solid #ddd;
+      overflow-y: auto;
+      z-index: 998;
+    }
+    .content {
+      margin-top: 70px;
+      margin-left: 320px;
+      padding: 20px;
+    }
+    .sidebar-root {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .sidebar-page, .sidebar-h1 {
+      margin-bottom: 6px;
+    }
+    .sidebar-toggle {
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 5px;
+      color: #555;
+    }
+    .h1-list, .h2-list {
+      list-style: none;
+      margin: 0 0 0 15px;
+      padding: 0;
+    }
+    a {
+      text-decoration: none;
+      color: #337ab7;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .h2-toggle {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    .collapsible-section {
+      display: none;
+      margin-left: 20px;
+    }
+    pre code {
+      background-color: #f0f0f0;
+      padding: 5px;
+      display: block;
+      overflow-x: auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">{{ title }}</div>
+  <div class="sidebar">{{ sidebar | safe }}</div>
+  <div class="content">{{ content | safe }}</div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var toggles = document.querySelectorAll(".sidebar-toggle");
+      toggles.forEach(function(toggle) {
+        toggle.addEventListener("click", function() {
+          var ul = this.parentElement.querySelector("ul");
+          if (!ul) return;
+          if (ul.style.display === "none" || ul.style.display === "") {
+            ul.style.display = "block";
+            this.textContent = "- ";
+          } else {
+            ul.style.display = "none";
+            this.textContent = "+ ";
+          }
+        });
+      });
+
+      var h2Toggles = document.querySelectorAll(".h2-toggle");
+      h2Toggles.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var collapsible = this.parentNode.nextElementSibling;
+          if (collapsible && collapsible.classList.contains("collapsible-section")) {
+            if (collapsible.style.display === "none" || collapsible.style.display === "") {
+              collapsible.style.display = "block";
+              this.textContent = "-";
+            } else {
+              collapsible.style.display = "none";
+              this.textContent = "+";
+            }
+          }
+        });
+      });
+
+      // Expand section and adjust scrolling for fixed header
+      function expandSectionFromHash() {
+        if (window.location.hash) {
+          var targetId = window.location.hash.substring(1); 
+          var targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            var collapsible = targetElement.nextElementSibling;
+            if (collapsible && collapsible.classList.contains("collapsible-section")) {
+              collapsible.style.display = "block";
+              var toggleBtn = targetElement.querySelector(".h2-toggle");
+              if (toggleBtn) toggleBtn.textContent = "-";
+              
+              // Scroll into view with offset for fixed header
+              setTimeout(function() {
+                var headerHeight = document.querySelector(".header").offsetHeight;
+                var elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: elementPosition - headerHeight - 10, behavior: "smooth" });
+              }, 100); // Small delay to ensure it's fully expanded
+            }
+          }
+        }
+      }
+
+      expandSectionFromHash();
+      window.addEventListener("hashchange", expandSectionFromHash);
+
+      var currentPage = window.location.pathname.split("/").pop();
+      var links = document.querySelectorAll(".sidebar a");
+      links.forEach(function(link) {
+        if (link.getAttribute("href") === currentPage) {
+          link.style.fontWeight = "bold";
+          var parent = link.closest("ul");
+          while (parent && parent.classList.contains("h1-list")) {
+            parent.style.display = "block";
+            var toggle = parent.previousElementSibling.querySelector(".sidebar-toggle");
+            if (toggle) toggle.textContent = "- ";
+            parent = parent.parentElement.closest("ul");
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

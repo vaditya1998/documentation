@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Production-Install</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+    .header {
+      background-color: #337ab7;
+      color: white;
+      padding: 15px;
+      font-size: 24px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+    .sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 250px;
+      bottom: 0;
+      padding: 20px;
+      background-color: #fafafa;
+      border-right: 1px solid #ddd;
+      overflow-y: auto;
+      z-index: 998;
+    }
+    .content {
+      margin-top: 70px;
+      margin-left: 320px;
+      padding: 20px;
+    }
+    .sidebar-root {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .sidebar-page, .sidebar-h1 {
+      margin-bottom: 6px;
+    }
+    .sidebar-toggle {
+      cursor: pointer;
+      font-weight: bold;
+      margin-right: 5px;
+      color: #555;
+    }
+    .h1-list, .h2-list {
+      list-style: none;
+      margin: 0 0 0 15px;
+      padding: 0;
+    }
+    a {
+      text-decoration: none;
+      color: #337ab7;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .h2-toggle {
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    .collapsible-section {
+      display: none;
+      margin-left: 20px;
+    }
+    pre code {
+      background-color: #f0f0f0;
+      padding: 5px;
+      display: block;
+      overflow-x: auto;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">Production-Install</div>
+  <div class="sidebar"><ul class="sidebar-root"><li class="sidebar-page"><span class="sidebar-toggle">+ </span><a href="Home.html">Home</a><ul class="h1-list" style="display:none;"><li class="sidebar-h1"><a href="Home.html#i2b2-documentation">i2b2 Documentation</a></li></ul></li><li class="sidebar-page"><span class="sidebar-toggle">+ </span><a href="Production-Install.html">Production-Install</a><ul class="h1-list" style="display:none;"><li class="sidebar-h1"><span class="sidebar-toggle">+ </span><a href="Production-Install.html#i2b2-production-deployment-guide">i2b2 Production Deployment Guide</a><ul class="h2-list" style="display:none;"><li class="sidebar-h2"><a href="Production-Install.html#1.-setting-up-subnets-in-the-cloud">1. Setting up Subnets in the Cloud</a></li><li class="sidebar-h2"><a href="Production-Install.html#2.-setting-up-postgresql-database">2. Setting up PostgreSQL Database</a></li><li class="sidebar-h2"><a href="Production-Install.html#3.-deploying-client-containers-and-database-connectivity">3. Deploying Client Containers and Database Connectivity</a></li></ul></li></ul></li><li class="sidebar-page"><span class="sidebar-toggle">+ </span><a href="i2b2-Upgrade.html">i2b2-Upgrade</a><ul class="h1-list" style="display:none;"><li class="sidebar-h1"><span class="sidebar-toggle">+ </span><a href="i2b2-Upgrade.html#i2b2-upgrade-guide">i2b2 Upgrade Guide</a><ul class="h2-list" style="display:none;"><li class="sidebar-h2"><a href="i2b2-Upgrade.html#step-1:-navigate-to-the-i2b2-docker-directory">Step 1: Navigate to the i2b2-docker Directory</a></li><li class="sidebar-h2"><a href="i2b2-Upgrade.html#step-2:-checkout-the-new-release-branch">Step 2: Checkout the New Release Branch</a></li><li class="sidebar-h2"><a href="i2b2-Upgrade.html#step-3:-stop-running-containers">Step 3: Stop Running Containers</a></li><li class="sidebar-h2"><a href="i2b2-Upgrade.html#step-4:-pull-the-latest-images">Step 4: Pull the Latest Images</a></li><li class="sidebar-h2"><a href="i2b2-Upgrade.html#step-5:-start-the-updated-containers">Step 5: Start the Updated Containers</a></li><li class="sidebar-h2"><a href="i2b2-Upgrade.html#step-6:-wait-for-initialization">Step 6: Wait for Initialization</a></li></ul></li></ul></li><li class="sidebar-page"><span class="sidebar-toggle">+ </span><a href="i2b2-Admin-Module.html">i2b2-Admin-Module</a><ul class="h1-list" style="display:none;"><li class="sidebar-h1"><a href="i2b2-Admin-Module.html#i2b2-administration-module-documentation">i2b2 Administration Module Documentation</a></li></ul></li><li class="sidebar-page"><span class="sidebar-toggle">+ </span><a href="Quick-Start.html">Quick-Start</a><ul class="h1-list" style="display:none;"><li class="sidebar-h1"><span class="sidebar-toggle">+ </span><a href="Quick-Start.html#quick-start---demo-install">Quick Start - Demo install</a><ul class="h2-list" style="display:none;"><li class="sidebar-h2"><a href="Quick-Start.html#prerequisites">Prerequisites</a></li><li class="sidebar-h2"><a href="Quick-Start.html#installation-instructions">Installation Instructions</a></li><li class="sidebar-h2"><a href="Quick-Start.html#troubleshooting-guide">Troubleshooting Guide</a></li><li class="sidebar-h2"><a href="Quick-Start.html#fresh-installation">Fresh Installation</a></li></ul></li></ul></li></ul></div>
+  <div class="content"><div><h1 id="i2b2-production-deployment-guide">i2b2 Production Deployment Guide</h1><p>This guide provides instructions for deploying i2b2 in a production environment, assuming you are using a PostgreSQL database on a remote production server.</p><hr/><h2 id="1.-setting-up-subnets-in-the-cloud"><button class="h2-toggle">+</button>1. Setting up Subnets in the Cloud</h2><div class="collapsible-section" style="display:none;"><p><em>temp</em></p><hr/></div><h2 id="2.-setting-up-postgresql-database"><button class="h2-toggle">+</button>2. Setting up PostgreSQL Database</h2><div class="collapsible-section" style="display:none;"><p>Follow the official i2b2 guide to set up the PostgreSQL database:</p><blockquote>
+<p><a href="https://community.i2b2.org/wiki/display/getstarted/Chapter+3.+Data+Installation">i2b2 Data Installation Guide</a></p>
+</blockquote><hr/></div><h2 id="3.-deploying-client-containers-and-database-connectivity"><button class="h2-toggle">+</button>3. Deploying Client Containers and Database Connectivity</h2><div class="collapsible-section" style="display:none;"><p>This section provides guidance for deploying the i2b2 web client and WildFly service using Docker while connecting them to a pre-configured production PostgreSQL database.</p><h3>Step 1: Clone the Repository</h3><p>If you have not already cloned the repository, execute:</p><pre class="codehilite"><code class="language-sh">git clone https://github.com/i2b2/i2b2-docker.git
+</code></pre><h3>Step 2: Navigate to the Repository Directory</h3><pre class="codehilite"><code class="language-sh">cd i2b2-docker
+</code></pre><h3>Step 3: Checkout the Production Branch</h3><p>Checkout the branch that contains only the web client and WildFly service.</p><pre class="codehilite"><code class="language-sh">git checkout release-v1.8.1a.0001_prod_db
+</code></pre><h3>Step 4: Configure the Database</h3><p>Ensure that the PostgreSQL production database is already set up and running. </p><ul>
+<li>Update the database environment variables in the <code>.env</code> file to match your production settings.</li>
+<li>Configure the following parameters:</li>
+<li><strong>Database Host</strong></li>
+<li><strong>Port</strong></li>
+<li><strong>Username</strong></li>
+<li><strong>Password</strong></li>
+<li><strong>Database Name</strong></li>
+<li><strong>Schema Name</strong></li>
+</ul><h3>Step 5: Start the Web and WildFly Containers</h3><p>Run the following command to start the containers:</p><pre class="codehilite"><code class="language-sh">docker-compose up -d i2b2-web
+</code></pre><h3>Step 6: Verify the Deployment</h3><ul>
+<li>Check if the WildFly container has started successfully:</li>
+</ul><p><code>sh
+  docker-compose logs WildFly</code></p><ul>
+<li>Access the i2b2 web client in your browser using the appropriate production URL and port.</li>
+</ul><hr/><p>This completes the i2b2 production deployment. If you encounter any issues, refer to the logs or the official i2b2 documentation.</p></div></div></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var toggles = document.querySelectorAll(".sidebar-toggle");
+      toggles.forEach(function(toggle) {
+        toggle.addEventListener("click", function() {
+          var ul = this.parentElement.querySelector("ul");
+          if (!ul) return;
+          if (ul.style.display === "none" || ul.style.display === "") {
+            ul.style.display = "block";
+            this.textContent = "- ";
+          } else {
+            ul.style.display = "none";
+            this.textContent = "+ ";
+          }
+        });
+      });
+
+      var h2Toggles = document.querySelectorAll(".h2-toggle");
+      h2Toggles.forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          var collapsible = this.parentNode.nextElementSibling;
+          if (collapsible && collapsible.classList.contains("collapsible-section")) {
+            if (collapsible.style.display === "none" || collapsible.style.display === "") {
+              collapsible.style.display = "block";
+              this.textContent = "-";
+            } else {
+              collapsible.style.display = "none";
+              this.textContent = "+";
+            }
+          }
+        });
+      });
+
+      // Expand section and adjust scrolling for fixed header
+      function expandSectionFromHash() {
+        if (window.location.hash) {
+          var targetId = window.location.hash.substring(1); 
+          var targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            var collapsible = targetElement.nextElementSibling;
+            if (collapsible && collapsible.classList.contains("collapsible-section")) {
+              collapsible.style.display = "block";
+              var toggleBtn = targetElement.querySelector(".h2-toggle");
+              if (toggleBtn) toggleBtn.textContent = "-";
+              
+              // Scroll into view with offset for fixed header
+              setTimeout(function() {
+                var headerHeight = document.querySelector(".header").offsetHeight;
+                var elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: elementPosition - headerHeight - 10, behavior: "smooth" });
+              }, 100); // Small delay to ensure it's fully expanded
+            }
+          }
+        }
+      }
+
+      expandSectionFromHash();
+      window.addEventListener("hashchange", expandSectionFromHash);
+
+      var currentPage = window.location.pathname.split("/").pop();
+      var links = document.querySelectorAll(".sidebar a");
+      links.forEach(function(link) {
+        if (link.getAttribute("href") === currentPage) {
+          link.style.fontWeight = "bold";
+          var parent = link.closest("ul");
+          while (parent && parent.classList.contains("h1-list")) {
+            parent.style.display = "block";
+            var toggle = parent.previousElementSibling.querySelector(".sidebar-toggle");
+            if (toggle) toggle.textContent = "- ";
+            parent = parent.parentElement.closest("ul");
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
